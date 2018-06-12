@@ -13,13 +13,22 @@
 
 Route::get('/', 'TasklistsController@index');
 
+// omit
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('tasklists', 'UsersController', ['only' => ['index', 'show']]);
+    Route::resource('tasklistts', 'TasklistsController', ['only' => ['store', 'destroy']]);
+});
+
 Route::resource('tasklists', 'TasklistsController');
 ;
 
 
+/*
 Route::get('/', function () {
 return view('welcome');
 });
+*/
 
 Route::get('signup', 'Auth\RegisterController@showRegistrationForm')->name('signup.get');
 Route::post('signup', 'Auth\RegisterController@register')->name('signup.post');

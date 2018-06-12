@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
     
-use App\Tasklist;    // add
+use App\Tasklists;    // add
 
 class TasklistsController extends Controller
 {
@@ -38,15 +38,15 @@ class TasklistsController extends Controller
  public function store(Request $request)
     {
         $this->validate($request, [
-            'status' => 'required|max:10',   // add
+            'status' => 'required|max:10',   
             'content' => 'required|max:191',
         ]);
 
-
         $tasklist = new Tasklist;
-        $tasklist->status = $request->status;    // add
-        $tasklist->content = $request->content;
-        $tasklist->save();
+        $request->user()->tasklists()->create([
+            'content' => $request->content,
+            'status' => $request->status,
+        ]);
 
 
         return redirect('/');
